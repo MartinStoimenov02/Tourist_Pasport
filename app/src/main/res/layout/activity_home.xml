@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginTop="252dp"
+        android:textColor="@color/black"
         android:text=""
         app:layout_constraintStart_toEndOf="@+id/textViewEmail"
         app:layout_constraintTop_toTopOf="parent" />

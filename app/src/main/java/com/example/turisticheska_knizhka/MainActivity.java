@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -214,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                                     activateFingerPrintForEmail(emailText, hashPasswordText);
                                 }
                                 else{
-                                    navigateToHomeActivity(emailText);
+                                    checkIsFirstLogin(emailText);
                                 }
                             } else {
                                 // User with the given email and password does not exist
@@ -251,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 localDatabase.addEmail(email, password);
                 // Dismiss the popup window
                 popupWindow.dismiss();
-                navigateToHomeActivity(email);
+                checkIsFirstLogin(email);
             }
         });
 
@@ -261,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Dismiss the popup window
                 popupWindow.dismiss();
-                navigateToHomeActivity(email);
+                checkIsFirstLogin(email);
             }
         });
 
@@ -282,7 +283,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void navigateToHomeActivity(String emailText){
-        ProgressDialog progressDialog = ProgressDialog.show(MainActivity.this, "Моля изчакайте", "Влизане...", true, false);
         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         intent.putExtra("email", emailText);
         startActivity(intent);
@@ -302,6 +302,44 @@ public class MainActivity extends AppCompatActivity {
             // Move cursor to the end of the text
             password.setSelection(password.getText().length());
         });
+    }
+
+    private void redirectToHelp(String emailText){
+        Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+        intent.putExtra("email", emailText);
+        startActivity(intent);
+        finish();
+    }
+
+    private void checkIsFirstLogin(String emailText) {
+        ProgressDialog progressDialog = ProgressDialog.show(MainActivity.this, "Моля изчакайте", "Влизане...", true, false);
+        // Get Firestore instance
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+        // Query for the user document with the provided email
+        firestore.collection("users")
+                .whereEqualTo("email", emailText)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        // Assuming there is only one document per user, get the first document
+                        DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
+
+                        // Retrieve the value of isFirstLogin field from the document
+                        Boolean isFirstLogin = documentSnapshot.getBoolean("loginFirst");
+
+                        if (isFirstLogin != null && isFirstLogin) {
+                            // If isFirstLogin is true, redirect to help activity
+                            redirectToHelp(emailText);
+                        }else{
+                            navigateToHomeActivity(emailText);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle any errors that may occur
+                    e.printStackTrace();
+                });
     }
 
     // TextWatcher to listen for changes in EditText fields

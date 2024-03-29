@@ -98,7 +98,7 @@ public class SignUpView extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    checkForExistingEmail();
+                checkForExistingEmail();
             }
         });
     }
@@ -116,7 +116,30 @@ public class SignUpView extends AppCompatActivity {
                                 email.setError("Потребител с такъв имейл вече съществува!");
                             } else {
                                 // Email does not exist, proceed to sign up
-                                ProgressDialog progressDialog = ProgressDialog.show(SignUpView.this, "Моля изчакайте", "Изпращане на имейл...", true, false);
+                                checkForExistingPhoneNumber();
+                            }
+                        } else {
+                            // Error occurred while fetching data
+                            Log.e("Firestore", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void checkForExistingPhoneNumber() {
+        firestore = FirebaseFirestore.getInstance();
+        firestore.collection("users").whereEqualTo("phone", phone.getText().toString())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().size() != 0) {
+                                // Email already exists, show error and return
+                                phone.setError("Потребител с такъв телефонен номер вече съществува!");
+                            } else {
+                                // Email does not exist, proceed to sign up
+                                //ProgressDialog progressDialog = ProgressDialog.show(SignUpView.this, "Моля изчакайте", "Изпращане на имейл...", true, false);
                                 navigateToCodeVerificationActivity();
                             }
                         } else {
@@ -157,9 +180,8 @@ public class SignUpView extends AppCompatActivity {
     // Method to verify fields before signup and set error messages
     private boolean verifyFields() {
         String emailPattern = "([0-9]|[A-Z]|[a-z]|_|-)+@([a-z]|-|_)+.[a-z]+";
-        String phonePattern = "[0-9]{8,}";
+        String phonePattern = "(\\+|[0-9]+\\/)?[0-9]{6,}"; //   02/9771834, +359885567787, 055/8441231
         String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
-
         String nameText = name.getText().toString();
         String emailText = email.getText().toString();
         String phoneText = phone.getText().toString();
