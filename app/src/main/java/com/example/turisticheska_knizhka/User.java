@@ -8,6 +8,7 @@ public class User {
     private boolean rememberMe;
     private boolean notifications;
     private boolean loginFirst;
+    private int points;
 
     // Default constructor required for Firestore
     public User() {
@@ -21,6 +22,7 @@ public class User {
         setRememberMe(false); // Default value
         setNotifications(true); // Default value
         setLoginFirst(true); // Default value
+        setPoints(0);
     }
 
     // Getter and setter methods...
@@ -50,6 +52,14 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     // Setter and getter for password

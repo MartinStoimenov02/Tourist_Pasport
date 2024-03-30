@@ -59,5 +59,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("com.sendgrid:sendgrid-java:4.6.7")
     implementation ("androidx.biometric:biometric:1.1.0")
+    implementation ("com.google.android.material:material:1.11.0")
+
 
 }
