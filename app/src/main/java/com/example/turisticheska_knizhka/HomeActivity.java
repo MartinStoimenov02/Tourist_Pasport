@@ -36,11 +36,12 @@ public class HomeActivity extends AppCompatActivity {
     private TextView meTextView;
     private CardView secondCardView;
     private LinearLayout topUsersLayout;
+    private BottomNavigationView bottomNavigationView;
+    private TextView textViewEmailValue;
     private Button showVisitedPlaces;
     private int points;
     private int level;
     List<User> topUsers;
-    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,17 +63,16 @@ public class HomeActivity extends AppCompatActivity {
         topUsersLayout = findViewById(R.id.topUsersLayout);
         meTextView = findViewById(R.id.meTextView);
 
-        // Find the TextView
-        TextView textViewEmailValue = findViewById(R.id.textViewEmailValue);
-
-        // Set the email to the TextView
+        textViewEmailValue = findViewById(R.id.textViewEmailValue);
         textViewEmailValue.setText("Вие сте влезнали като: " + email);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.action_home);
-        //navigationMenu();
-        Navigation navigation = new Navigation(email, bottomNavigationView, HomeActivity.this);
-        navigation.bottomNavigation();
+        BottomNavigationView topMenu = findViewById(R.id.top_menu);
+        topMenu.setSelectedItemId(R.id.space);
+        Navigation navigation = new Navigation(email, HomeActivity.this);
+        navigation.bottomNavigation(bottomNavigationView);
+        navigation.topMenu(topMenu);
 
         getLinkedVisitedPlaces();
 
