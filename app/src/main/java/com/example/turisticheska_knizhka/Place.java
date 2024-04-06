@@ -3,6 +3,7 @@ package com.example.turisticheska_knizhka;
 import com.google.firebase.firestore.DocumentReference;
 
 public class Place {
+    private String id;
     private String name;
     private String urlMap;
     private String workingHours;
@@ -32,7 +33,24 @@ public class Place {
         setNto100(nto100);
     }
 
+    public Place(String id, String name, String urlMap, String workingHours, String placePhoneNumber, String imgPath, int distance, boolean isFavourite, boolean isVisited, DocumentReference userEmail, DocumentReference nto100) {
+        setId(id);
+        setName(name);
+        setUrlMap(urlMap);
+        setWorkingHours(workingHours);
+        setPlacePhoneNumber(placePhoneNumber);
+        setImgPath(imgPath);
+        setDistance(distance);
+        setFavourite(isFavourite);
+        setVisited(isVisited);
+        setUserEmail(userEmail);
+        setNto100(nto100);
+    }
+
     // Getters
+    public String getId() {
+        return id;
+    }
     public String getName() {
         return name;
     }
@@ -74,6 +92,10 @@ public class Place {
     }
 
     // Setters
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

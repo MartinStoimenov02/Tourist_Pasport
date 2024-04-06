@@ -19,10 +19,10 @@ public class Navigation {
                 navigateToHomeActivity();
                 return true;
             } else if(item.getItemId()==R.id.action_my_places){
-                //navigateToHomeActivity();
+                navigateToPlaceListView(1);
                 return true;
             } else if(item.getItemId()==R.id.action_nto100){
-                //navigateToHomeActivity();
+                navigateToPlaceListView(2);
                 return true;
             } else if(item.getItemId()==R.id.action_nearest){
                 //navigateToHomeActivity();
@@ -60,7 +60,16 @@ public class Navigation {
         intent.putExtra("email", email);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         context.startActivity(intent);
-        ((Activity)context).finish();;
+        ((Activity)context).finish();
+    }
+
+    private void navigateToPlaceListView(int caseNumber){
+        Intent intent = new Intent(context, PlaceListView.class);
+        intent.putExtra("email", email);
+        intent.putExtra("caseNumber", caseNumber);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        context.startActivity(intent);
+        ((Activity)context).finish();
     }
 
     private void navigateToProfileActivity(){

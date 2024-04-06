@@ -60,6 +60,7 @@ dependencies {
     implementation ("com.sendgrid:sendgrid-java:4.6.7")
     implementation ("androidx.biometric:biometric:1.1.0")
     implementation ("com.google.android.material:material:1.11.0")
+    implementation ("com.google.firebase:firebase-database:20.3.1")
 
 
 }

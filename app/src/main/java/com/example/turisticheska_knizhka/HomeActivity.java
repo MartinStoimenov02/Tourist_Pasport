@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.text.SpannableString;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -55,6 +56,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         topUsers = new ArrayList<>();
+        placeList = new ArrayList<>();
 
         textViewPoints = findViewById(R.id.textViewPointsNumber);
         textViewLevel = findViewById(R.id.textViewLevelNumber);
@@ -86,40 +88,24 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void getLinkedVisitedPlaces() {
-        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
-
-        // Initialize the list to hold Place objects
-        placeList = new ArrayList<>();
-
-        // Get reference to the user document
         DocumentReference userRef = db.collection("users").document(email);
-
-        // Query Firestore for documents where userEmail matches the user reference and isVisited is true
-        CollectionReference placesRef = db.collection("places");
-        Query query = placesRef.whereEqualTo("userEmail", userRef)
-                .whereEqualTo("isVisited", true);
-
-        query.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                // Handle successful query result
-                QuerySnapshot querySnapshot = task.getResult();
-                // Iterate through documents
-                for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                    // Convert each document to a Place object
-                    Place place = document.toObject(Place.class);
-                    // Add the Place object to the list
-                    placeList.add(place);
-                }
-                // Update UI or perform other operations with the placeList
+        QueryLocator.getVisitedPlaces(email, new PlacesCallback() {
+            @Override
+            public void onPlacesLoaded(List<Place> places) {
+                placeList = places;
+                Log.d("PLACES", "places: "+placeList);
                 displayCountOfPlaces();
                 calculatePoints();
                 calculateLevel();
                 displayPointsAndLevel();
                 updatePointsForUser(userRef);
-            } else {
-                // Handle failed query
-                Log.d("TAG", "Error getting documents: ", task.getException());
+            }
+
+            @Override
+            public void onError(Exception e) {
+                // Handle error
+                Toast.makeText(HomeActivity.this, "Error loading places", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -133,6 +119,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void calculatePoints(){
         for(Place pl : placeList){
+            Log.d("POINTS", "Error: "+pl.getId());
             if(pl.getNto100()==null){
                 points+=2;
             }else{
