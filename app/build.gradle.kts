@@ -61,6 +61,6 @@ dependencies {
     implementation ("androidx.biometric:biometric:1.1.0")
     implementation ("com.google.android.material:material:1.11.0")
     implementation ("com.google.firebase:firebase-database:20.3.1")
-
-
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 }

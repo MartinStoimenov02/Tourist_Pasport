@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Туристическа книжка</string>
+    <string name="app_name">Български турист</string>
     <string name="title_activity_help">HelpActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

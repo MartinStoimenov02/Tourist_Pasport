@@ -20,15 +20,15 @@ public class Place {
         // Default constructor required for Firebase deserialization
     }
 
-    public Place(String name, String urlMap, String workingHours, String placePhoneNumber, String imgPath, int distance, boolean isFavourite, boolean isVisited, DocumentReference userEmail, DocumentReference nto100) {
+    public Place(String name, String urlMap, String workingHours, String placePhoneNumber, String imgPath, int distance, DocumentReference userEmail, DocumentReference nto100) {
         setName(name);
         setUrlMap(urlMap);
         setWorkingHours(workingHours);
         setPlacePhoneNumber(placePhoneNumber);
         setImgPath(imgPath);
         setDistance(distance);
-        setFavourite(isFavourite);
-        setVisited(isVisited);
+        setIsFavourite(false);
+        setIsVisited(false);
         setUserEmail(userEmail);
         setNto100(nto100);
     }
@@ -41,8 +41,8 @@ public class Place {
         setPlacePhoneNumber(placePhoneNumber);
         setImgPath(imgPath);
         setDistance(distance);
-        setFavourite(isFavourite);
-        setVisited(isVisited);
+        setIsFavourite(isFavourite);
+        setIsVisited(isVisited);
         setUserEmail(userEmail);
         setNto100(nto100);
     }
@@ -75,11 +75,11 @@ public class Place {
         return distance;
     }
 
-    public boolean isFavourite() {
+    public boolean getIsFavourite() {
         return isFavourite;
     }
 
-    public boolean isVisited() {
+    public boolean getIsVisited() {
         return isVisited;
     }
 
@@ -120,11 +120,11 @@ public class Place {
         this.distance = distance;
     }
 
-    public void setFavourite(boolean favourite) {
+    public void setIsFavourite(boolean favourite) {
         isFavourite = favourite;
     }
 
-    public void setVisited(boolean visited) {
+    public void setIsVisited(boolean visited) {
         isVisited = visited;
     }
 
